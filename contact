@@ -1,0 +1,101 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_CONTACTS 100
+
+// Define a structure to represent a contact
+struct Contact {
+    char name[50];
+    char phone[15];
+    char email[50];
+};
+
+// Function to add a contact
+void addContact(struct Contact contacts[], int *contactCount) {
+    if (*contactCount < MAX_CONTACTS) {
+        printf("Enter contact name: ");
+        scanf(" %[^\n]", contacts[*contactCount].name);
+        printf("Enter phone number: ");
+        scanf(" %[^\n]", contacts[*contactCount].phone);
+        printf("Enter email address: ");
+        scanf(" %[^\n]", contacts[*contactCount].email);
+        (*contactCount)++;
+        printf("Contact added successfully!\n");
+    } else {
+        printf("Contact limit reached. Cannot add more contacts.\n");
+    }
+}
+
+// Function to view all contacts
+void viewContacts(struct Contact contacts[], int contactCount) {
+    if (contactCount == 0) {
+        printf("No contacts found.\n");
+        return;
+    }
+
+    printf("Contact List:\n");
+    for (int i = 0; i < contactCount; i++) {
+        printf("Name: %s\n", contacts[i].name);
+        printf("Phone: %s\n", contacts[i].phone);
+        printf("Email: %s\n", contacts[i].email);
+        printf("\n");
+    }
+}
+
+// Function to search for a contact by name
+void searchContact(struct Contact contacts[], int contactCount, char name[]) {
+    int found = 0;
+    for (int i = 0; i < contactCount; i++) {
+        if (strcmp(contacts[i].name, name) == 0) {
+            printf("Contact found:\n");
+            printf("Name: %s\n", contacts[i].name);
+            printf("Phone: %s\n", contacts[i].phone);
+            printf("Email: %s\n", contacts[i].email);
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found) {
+        printf("Contact with name '%s' not found.\n", name);
+    }
+}
+
+int main() {
+    struct Contact contacts[MAX_CONTACTS];
+    int contactCount = 0;
+
+    int choice;
+    char name[50];
+
+    while (1) {
+        printf("\nContact Management System\n");
+        printf("1. Add Contact\n");
+        printf("2. View Contacts\n");
+        printf("3. Search Contact\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                addContact(contacts, &contactCount);
+                break;
+            case 2:
+                viewContacts(contacts, contactCount);
+                break;
+            case 3:
+                printf("Enter the name to search for: ");
+                scanf(" %[^\n]", name);
+                searchContact(contacts, contactCount, name);
+                break;
+            case 4:
+                printf("Exiting Contact Management System\n");
+                return 0;
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+
+    return 0;
+}
